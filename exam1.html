@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CISI Securities L3 — Paper 1</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1c1917;--paper:#fafaf8;--border:#ddd9d2;--navy:#0f1f3d;--navy-mid:#1a3160;--gold:#c9a84c;--gold-light:#e8c97a;--red:#7f1d1d;--redbg:#fef2f2;--greenbg:#f0fdf4;--green:#14532d;--blue:#1e3a5f;--bluebg:#eff6ff;--muted:#78716c}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:15px;min-height:100vh}
+#cover{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px;background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 60%,#2a4a8a 100%);position:relative;overflow:hidden}
+#cover::before{content:'';position:absolute;width:500px;height:500px;border:1px solid rgba(201,168,76,0.15);border-radius:50%;top:-100px;right:-100px}
+.cv-badge{background:rgba(201,168,76,0.15);border:1px solid var(--gold);color:var(--gold-light);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 18px;border-radius:20px;margin-bottom:32px;position:relative;z-index:1}
+.cv-title{font-size:clamp(28px,5vw,56px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:10px;position:relative;z-index:1}
+.cv-sub{font-size:clamp(14px,2vw,20px);color:var(--gold-light);margin-bottom:48px;position:relative;z-index:1;font-weight:300}
+.cv-stats{display:flex;gap:32px;margin-bottom:52px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.cv-stat .n{font-size:38px;font-weight:800;color:var(--gold);display:block;line-height:1}
+.cv-stat .l{font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px}
+.cv-btn{background:var(--gold);color:var(--navy);border:none;padding:15px 44px;font-size:15px;font-weight:700;cursor:pointer;border-radius:4px;transition:all 0.2s;position:relative;z-index:1}
+.cv-btn:hover{background:var(--gold-light);transform:translateY(-1px)}
+.back-link{position:absolute;top:20px;left:20px;color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;z-index:2;display:flex;align-items:center;gap:6px}
+.back-link:hover{color:#fff}
+.cv-note{color:rgba(255,255,255,0.3);font-size:11px;margin-top:20px;position:relative;z-index:1}
+#exam-shell{display:none}
+.hdr{height:52px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.25)}
+.hdr-left{display:flex;align-items:center;gap:12px}
+.hdr-back{color:rgba(255,255,255,0.5);font-size:12px;text-decoration:none;display:flex;align-items:center;gap:5px}
+.hdr-back:hover{color:var(--gold)}
+.hdr-brand{color:var(--gold);font-size:14px;font-weight:700}
+.hdr-mid{display:flex;align-items:center;gap:16px}
+.hdr-qn{font-size:12px;color:rgba(255,255,255,0.5)}
+.hdr-qn span{color:#fff;font-weight:600}
+.timer{background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.5);color:var(--gold);padding:4px 12px;border-radius:4px;font-size:13px;font-weight:700;letter-spacing:1.5px;font-variant-numeric:tabular-nums}
+.timer.warn{background:rgba(127,29,29,0.2);border-color:#ef4444;color:#fca5a5;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
+.hdr-sub{background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold);padding:5px 14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s}
+.hdr-sub:hover{background:var(--gold);color:var(--navy)}
+.prog-wrap{height:3px;background:rgba(255,255,255,0.08)}
+.prog-fill{height:100%;background:var(--gold);transition:width 0.3s}
+.layout{display:flex;max-width:1080px;margin:0 auto;padding:28px 16px 60px;gap:24px;align-items:flex-start}
+.qpanel{flex:1;min-width:0}
+.ch-tag{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2d6a2d;background:rgba(45,106,45,0.07);border:1px solid rgba(45,106,45,0.2);display:inline-block;padding:3px 10px;border-radius:3px;margin-bottom:14px}
+.qnum{font-size:12px;color:var(--muted);margin-bottom:8px;font-style:italic}
+.qtext{font-size:17px;line-height:1.65;color:var(--ink);margin-bottom:24px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border:1.5px solid var(--border);border-radius:5px;cursor:pointer;background:#fff;transition:all 0.12s;user-select:none}
+.opt:hover{border-color:var(--blue);background:var(--bluebg)}
+.opt.sel{border-color:var(--blue);background:var(--bluebg)}
+.opt.right{border-color:var(--green);background:var(--greenbg);pointer-events:none}
+.opt.wrong{border-color:var(--red);background:var(--redbg);pointer-events:none}
+.opt.show-right{border-color:var(--green);background:var(--greenbg);pointer-events:none}
+.opt.dis{pointer-events:none;opacity:0.55}
+.opt-l{min-width:25px;height:25px;border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);flex-shrink:0;margin-top:2px}
+.opt.sel .opt-l{border-color:var(--blue);color:var(--blue)}
+.opt.right .opt-l,.opt.show-right .opt-l{border-color:var(--green);color:var(--green)}
+.opt.wrong .opt-l{border-color:var(--red);color:var(--red)}
+.opt-t{font-size:14px;line-height:1.5;padding-top:3px}
+.feedback{margin-top:14px;padding:11px 14px;border-radius:5px;font-size:13px;line-height:1.5;display:none}
+.feedback.ok{background:var(--greenbg);color:var(--green);border-left:3px solid var(--green);display:block}
+.feedback.bad{background:var(--redbg);color:var(--red);border-left:3px solid var(--red);display:block}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:28px}
+.nbtn{padding:10px 22px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.12s;border:1.5px solid var(--border);background:#fff;color:var(--ink)}
+.nbtn:hover{border-color:var(--navy)}
+.nbtn:disabled{opacity:0.3;cursor:not-allowed}
+.nbtn.p{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nbtn.p:hover{background:var(--navy-mid)}
+.sb{width:210px;flex-shrink:0;position:sticky;top:74px}
+.sb-t{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.qgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.qdot{width:34px;height:34px;border-radius:4px;border:1.5px solid var(--border);background:#fff;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.1s}
+.qdot:hover{border-color:var(--navy);color:var(--navy)}
+.qdot.cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+.qdot.ans{background:var(--bluebg);border-color:var(--blue);color:var(--blue)}
+.qdot.ok{background:var(--greenbg);border-color:var(--green);color:var(--green)}
+.qdot.bad{background:var(--redbg);border-color:var(--red);color:var(--red)}
+#res{display:none;min-height:100vh;background:var(--paper)}
+.rh{background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:52px 20px;text-align:center}
+.rl{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-weight:700}
+.rv{font-size:clamp(36px,6vw,60px);font-weight:800;color:#fff;margin-bottom:6px}
+.rs{font-size:clamp(60px,10vw,100px);font-weight:800;color:var(--gold);line-height:1;margin-bottom:8px}
+.rd{color:rgba(255,255,255,0.45);font-size:14px}
+.rb{max-width:760px;margin:40px auto;padding:0 20px}
+.rbt{font-size:22px;font-weight:700;margin-bottom:20px;color:var(--ink)}
+.chrow{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--border)}
+.chname{flex:1;font-size:13px}
+.chbar{width:140px;height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.chbar-f{height:100%;border-radius:4px}
+.chsc{font-size:12px;font-weight:700;min-width:55px;text-align:right}
+.ract{display:flex;gap:12px;justify-content:center;padding:0 20px 60px;flex-wrap:wrap}
+.rbtn{padding:12px 28px;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.15s}
+.rbtn.p{background:var(--navy);color:#fff;border:none}
+.rbtn.p:hover{background:var(--navy-mid)}
+.rbtn.s{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.rbtn.s:hover{background:var(--navy);color:#fff}
+.rbtn.h{background:#fff;color:var(--muted);border:1.5px solid var(--border)}
+.rbtn.h:hover{border-color:var(--navy);color:var(--navy)}
+@media(max-width:680px){.sb{display:none}.layout{padding:16px 12px 48px}}
+</style>
+</head>
+<body>
+<div id="cover">
+  <a class="back-link" href="index.html">&#8592; All Papers</a>
+  <div class="cv-badge">CISI · Level 3 · Securities · Paper 1</div>
+  <div class="cv-title">Securities</div>
+  <div class="cv-sub">Practice Examination — Version A</div>
+  <div class="cv-stats">
+    <div class="cv-stat"><span class="n">100</span><div class="l">Questions</div></div>
+    <div class="cv-stat"><span class="n">2h</span><div class="l">Allowed</div></div>
+    <div class="cv-stat"><span class="n">70%</span><div class="l">Pass Mark</div></div>
+  </div>
+  <button class="cv-btn" id="startBtn">Begin Examination →</button>
+  <div class="cv-note">Based on CISI Securities Edition 21 · Syllabus v25.0</div>
+</div>
+<div id="exam-shell">
+  <div class="hdr">
+    <div class="hdr-left">
+      <a class="hdr-back" href="index.html">&#8592; Papers</a>
+      <div class="hdr-brand">Paper 1</div>
+    </div>
+    <div class="hdr-mid">
+      <div class="hdr-qn">Q <span id="qn">1</span>/100</div>
+      <div class="timer" id="tmr">2:00:00</div>
+    </div>
+    <button class="hdr-sub" id="submitBtn">Submit</button>
+  </div>
+  <div class="prog-wrap"><div class="prog-fill" id="prog" style="width:1%"></div></div>
+  <div class="layout">
+    <div class="qpanel" id="qpanel"></div>
+    <div class="sb"><div class="sb-t">Navigator</div><div class="qgrid" id="grid"></div></div>
+  </div>
+</div>
+<div id="res">
+  <div class="rh">
+    <div class="rl">Examination Complete</div>
+    <div class="rv" id="verdict">—</div>
+    <div class="rs" id="score">—</div>
+    <div class="rd" id="rdetail">—</div>
+  </div>
+  <div class="rb">
+    <div class="rbt">Performance by Chapter</div>
+    <div id="chbd"></div>
+  </div>
+  <div class="ract">
+    <button class="rbtn p" id="reviewBtn">Review Answers</button>
+    <button class="rbtn s" id="retakeBtn">Retake</button>
+    <button class="rbtn h" onclick="window.location.href='index.html'">&#8592; All Papers</button>
+  </div>
+</div>
+<script>
+var Q=[
+{ch:1,n:"Financial Services Industry",r:"1.1.1",q:"Which of the following BEST describes the wholesale sector of the financial services industry?",o:["Business-to-consumer services including retail banking and insurance","Business-to-business services including equity markets, bond markets and fund management","Services provided exclusively by government-owned institutions","Services provided to small and medium-sized enterprises only"],a:1},
+{ch:1,n:"Financial Services Industry",r:"1.1.1",q:"Which of the following is a key activity of investment banks in the wholesale sector?",o:["Providing current accounts and deposit facilities to retail customers","Underwriting and bookbuilding new issues of securities for capital raising","Offering robo-advisory investment services to retail clients","Providing mortgage lending to individual homeowners"],a:1},
+{ch:1,n:"Financial Services Industry",r:"1.1.2",q:"Which type of retail sector participant is MOST likely to invest in long-term assets such as equities and bonds to fund retirement obligations?",o:["Retail bank","Pension fund","Robo-advisor","Current account provider"],a:1},
+{ch:1,n:"Financial Services Industry",r:"1.1.2",q:"A financial planner who is legally and ethically bound to put a client's interests ahead of their own is described as a:",o:["Broker-dealer","Fiduciary","Custodian","Market maker"],a:1},
+{ch:1,n:"Financial Services Industry",r:"1.1.3",q:"Which wholesale sector participant is primarily responsible for the safekeeping of assets, settlement of securities and collection of dividends on behalf of fund managers?",o:["Investment bank","Fund manager","Custodian bank","Corporate broker"],a:2},
+{ch:1,n:"Financial Services Industry",r:"1.1.3",q:"Which of the following BEST describes the role of a stockbroker acting as an agent?",o:["The broker buys and sells securities for their own account","The broker arranges trades on behalf of clients, earning a commission","The broker underwrites new issues of shares for companies","The broker provides safe custody of client assets"],a:1},
+{ch:2,n:"Asset Classes",r:"2.2.1",q:"Which of the following is TRUE regarding ordinary shareholders' voting rights?",o:["Votes are proportional to the total number of shareholders","Unused votes may be reallocated by the company chairman","A shareholder may appoint a proxy to vote on their behalf","Shareholders must attend extraordinary general meetings in person"],a:2},
+{ch:2,n:"Asset Classes",r:"2.2.2",q:"Which type of preference share entitles the holder to receive unpaid dividends from prior years before any ordinary dividend is paid?",o:["Redeemable","Participating","Cumulative","Convertible"],a:2},
+{ch:2,n:"Asset Classes",r:"2.3.1",q:"Which of the following statements BEST distinguishes bonds from equities?",o:["Bonds confer voting rights whereas equities do not","Bond investors lend money to the issuer and have an agreed repayment date; equity investors hold an ownership stake","Equities always outperform bonds over any time period","Bond issuers are not required to make contractual interest payments"],a:1},
+{ch:2,n:"Asset Classes",r:"2.3.1",q:"What is the nominal value of a bond?",o:["The current market price of the bond","The total interest paid over the life of the bond","The amount the borrower will repay to the bondholder at maturity","The annual coupon expressed as a percentage of the market price"],a:2},
+{ch:2,n:"Asset Classes",r:"2.3.2",q:"The MOST accurate description of modified duration is that it:",o:["Predicts the price movement of a bond given a change in its yield","Calculates the gross redemption yield of a bond","Identifies the issuer's credit rating","Measures the time until the next coupon payment"],a:0},
+{ch:2,n:"Asset Classes",r:"2.3.3",q:"A bond with a 6% annual coupon and 182 days of accrued interest (non-leap year, actual/actual convention) on £100 nominal. What is the accrued interest?",o:["£2.99","£3.00","£2.78","£3.25"],a:0},
+{ch:2,n:"Asset Classes",r:"2.3.2",q:"What is the flat yield of a bond with a 5% coupon trading at £95 per £100 nominal?",o:["4.75%","5.00%","5.26%","5.56%"],a:2},
+{ch:2,n:"Asset Classes",r:"2.3.6",q:"What is the present value of a £100 nominal zero coupon bond redeemable in 3 years at a discount rate of 5%?",o:["£86.38","£85.00","£90.70","£88.90"],a:0},
+{ch:2,n:"Asset Classes",r:"2.4.3",q:"A company wishes to issue zero coupon bonds. These will be priced:",o:["At a premium to face value","At a discount to face value","At nominal value","At a premium or discount depending on the issuer's credit rating"],a:1},
+{ch:2,n:"Asset Classes",r:"2.3.4",q:"Which of the following describes the yield curve under normal economic conditions?",o:["Inverted, with short-term rates higher than long-term rates","Flat, with all maturities at the same rate","Upward-sloping, with long-term rates higher than short-term rates","Downward-sloping from the two-year point"],a:2},
+{ch:2,n:"Asset Classes",r:"2.4.4",q:"German Bobls are government bonds issued by Germany. Which of the following is TRUE regarding their maturity period?",o:["They are typically issued with a maturity of 10 years","They typically have a shorter maturity than Japanese Government Bonds (JGBs)","They pay coupons on a semi-annual basis","They are denominated in US dollars"],a:1},
+{ch:2,n:"Asset Classes",r:"2.5.1",q:"Which of the following may be funded by the interest and principal payments from an asset-backed security?",o:["Payments received from a pool of underlying loan assets","Guarantees from a central bank","Interest payments from overseas sovereign bonds","The proceeds of an initial public offering"],a:0},
+{ch:2,n:"Asset Classes",r:"2.1.2",q:"What return does an investor in Treasury Bills receive?",o:["A fixed semi-annual coupon","A variable coupon linked to base rate","A return determined by the price paid at issue (discount to par)","A return based on the issuer's credit rating"],a:2},
+{ch:2,n:"Asset Classes",r:"2.1.4",q:"In a repurchase agreement (repo), what does the repo rate represent?",o:["The amount of collateral required by the lender","The implied interest rate embedded in the terms of the repo","The haircut applied to collateral","The margin call threshold"],a:1},
+{ch:2,n:"Asset Classes",r:"2.1.3",q:"Which financial instrument is ALWAYS issued at a discount to par?",o:["Eurobond","Gilt","Commercial paper","Debenture"],a:2},
+{ch:2,n:"Asset Classes",r:"2.8.1",q:"Spot transactions in the foreign exchange market are normally settled within a maximum of how many working days?",o:["1","2","3","5"],a:1},
+{ch:2,n:"Asset Classes",r:"2.8.1",q:"In a EUR/USD exchange rate quote, the US dollar is described as the:",o:["Base currency","Counter currency","Cross currency","Bid currency"],a:1},
+{ch:2,n:"Asset Classes",r:"2.8.2",q:"If GBP/USD spot is 1.2500 and UK annual interest rates are 4% while US rates are 2%, what is the approximate one-year forward rate?",o:["1.2252","1.2748","1.2500","1.2300"],a:0},
+{ch:2,n:"Asset Classes",r:"2.8.3",q:"The theory that a country's currency will weaken against another if it has a higher inflation rate is known as:",o:["Interest rate parity","Purchasing power parity","Covered interest arbitrage","Forward rate theory"],a:1},
+{ch:2,n:"Asset Classes",r:"2.9.2",q:"A key benefit of purchasing shares in an investment trust compared to a unit trust is:",o:["Investment trusts always outperform unit trusts","Investors can potentially buy at a discount to net asset value","Investment trusts offer a single price for buying and selling","Investment trusts have lower regulatory requirements"],a:1},
+{ch:2,n:"Asset Classes",r:"2.9.1",q:"An investor in an unregulated collective investment scheme should be made aware that:",o:["The fund must hold a diversified range of assets","The fund is prohibited from using leverage","Such an investment should be considered long-term","Performance fees are prohibited"],a:2},
+{ch:2,n:"Asset Classes",r:"2.7.3",q:"A key benefit of investing in a Real Estate Investment Trust (REIT) compared with direct residential property is that:",o:["REITs are exempt from all forms of taxation","Stamp duty is payable at a reduced rate on REIT shares","REITs reduce exposure to liquidity risk compared with direct property","REIT dividend income is always tax-free"],a:2},
+{ch:2,n:"Asset Classes",r:"2.9.4",q:"When considering private equity funds, a fund manager should be aware that:",o:["Returns are typically uncorrelated with the economic cycle","Such funds cannot be marketed to retail clients","Performance fees are not permitted","Returns are usually correlated with the economic cycle"],a:3},
+{ch:2,n:"Asset Classes",r:"2.1.1",q:"A key risk for a UK investor placing deposits in an overseas bank is that:",o:["They will always pay higher taxation than on UK deposits","They will receive lower interest rates","They may face exchange controls when repatriating funds","They will automatically lose FSCS protection"],a:2},
+{ch:3,n:"Markets",r:"3.1.1",q:"Which of the following is the MOST accurate description of the secondary market?",o:["The market where companies raise new capital via an IPO","The market where already-listed securities are freely bought and sold","The market where companies make offers for subscription","The market for private placements only"],a:1},
+{ch:3,n:"Markets",r:"5.2.1",q:"Which of the following is a key characteristic of an order-driven market?",o:["Market makers are obliged to provide two-way prices","Prices are set by dealers negotiating directly by telephone","Orders from buyers and sellers are automatically matched and executed","Price quotes must be displayed throughout the mandatory quote period"],a:2},
+{ch:3,n:"Markets",r:"5.2.1",q:"A quote-driven market uses which of the following pricing systems?",o:["Single price auction","Order book matching","Two-way prices provided by market makers","Periodic call auction"],a:2},
+{ch:3,n:"Markets",r:"5.1.4",q:"Why would an investment bank use a 'dark pool' to sell a large block of securities?",o:["To sell a small quantity of shares quickly at best execution","To benefit from a wider range of retail investors","To sell a large quantity of shares without disclosing the transaction to the wider market","To comply with MiFID II pre-trade transparency requirements"],a:2},
+{ch:4,n:"Primary Markets",r:"4.1.1",q:"Which of the following would MOST typically lead and manage the sale of shares in an Initial Public Offering?",o:["Reporting accountants","A syndicate led by an investment bank","An insurance company acting as underwriter","The company's legal advisers"],a:1},
+{ch:4,n:"Primary Markets",r:"4.1.4",q:"Which method of bringing a company to market is the LEAST expensive?",o:["Offer for sale","Offer for subscription","Introduction","Placing"],a:2},
+{ch:4,n:"Primary Markets",r:"4.2.1",q:"During a new issue, who are normally the members of the underwriting syndicate?",o:["The sponsor, legal team and accountants","The lead manager and co-managers","Reporting accountants only","The corporate broker and legal advisers"],a:1},
+{ch:4,n:"Primary Markets",r:"4.2.2",q:"Which part of the origination team is MOST likely to assess the best method of bringing a company to market?",o:["The legal adviser","The reporting accountant","The sponsor","The corporate broker"],a:2},
+{ch:4,n:"Primary Markets",r:"4.2.3",q:"Which part of the origination team is responsible for carrying out due diligence on the prospectus?",o:["The legal adviser and reporting accountant","The sponsor only","The corporate broker and legal adviser","The listing agent only"],a:0},
+{ch:4,n:"Primary Markets",r:"4.2.3",q:"Which of the following is a corporate governance expectation for a company planning to list securities?",o:["A listing agent must be appointed at least 12 months in advance","Non-executive directors from unrelated industries must constitute a majority","The roles of chairman and chief executive should be separated","The company must have a minimum market capitalisation of £500m"],a:2},
+{ch:4,n:"Primary Markets",r:"4.2.4",q:"What is the primary benefit of underwriting to an issuing company?",o:["It reduces the fees payable to the stock exchange","It guarantees that all shares will be sold and minimum proceeds received","It increases the likelihood of a better price for the shares","It allows the issue to proceed more quickly"],a:1},
+{ch:4,n:"Primary Markets",r:"4.2.5",q:"Stabilisation in a new issue benefits investors primarily because it prevents:",o:["Partial order fills","Substantial losses from large price falls","Insiders from short selling the stock","Large orders receiving priority execution"],a:1},
+{ch:4,n:"Primary Markets",r:"4.2.1",q:"A large US company is listing on both the New York and London Stock Exchanges. A London-based investment bank is responsible for the UK listing only. Its role in the syndicate would MOST LIKELY be described as:",o:["Sponsor","Book runner","Co-lead manager","Co-manager"],a:3},
+{ch:4,n:"Primary Markets",r:"4.3.2",q:"A firm of accountants has been appointed as 'nomad' for a company listed on the Alternative Investment Market (AIM). This confirms that:",o:["The company is applying for a full premium listing","The nomad has been approved by the London Stock Exchange","The nomad will act jointly with the existing financial adviser","The company is seeking to significantly increase its share capital"],a:1},
+{ch:5,n:"Secondary Markets",r:"5.1.2",q:"A key consideration for a broker placing clients' assets in emerging and frontier markets is that:",o:["Settlement periods are always longer than 7 working days","These markets do not have the same degree of sophistication as developed markets","There is always a greater risk of bribery or corruption","Greater liquidity will be in evidence compared with developed markets"],a:1},
+{ch:5,n:"Secondary Markets",r:"5.1.3",q:"A stock exchange member firm is acting as a dealer. This means the firm is acting as:",o:["An agent only","A principal only","Either agent or principal depending on the transaction","A market maker only"],a:1},
+{ch:5,n:"Secondary Markets",r:"5.2.3",q:"Which of the following risks is MOST likely to increase as a consequence of high-frequency trading?",o:["Credit risk","Liquidity risk","Counterparty risk","Systemic risk"],a:3},
+{ch:5,n:"Secondary Markets",r:"5.2.4",q:"A prime broker has covered a short position in a hedge fund's long strategy. Which service has the prime broker provided?",o:["Cash management","Core settlement","Securities lending and borrowing","Rehypothecation"],a:2},
+{ch:5,n:"Secondary Markets",r:"5.3.3",q:"A significant benefit of a central counterparty (CCP) system is that it:",o:["Prohibits anonymous trading","Reduces systemic risk","Increases operational risk capital requirements","Facilitates certificated trade settlement"],a:1},
+{ch:5,n:"Secondary Markets",r:"5.3.3",q:"What is the key benefit that usually arises from the use of central counterparties when executing trades?",o:["Greater transparency as to the identity of trading parties","Improved execution prices for all participants","Netting of transactions which reduces settlement volumes","Guaranteed settlement within T+1"],a:2},
+{ch:5,n:"Secondary Markets",r:"5.3.4",q:"A securities broker charges 0.6% commission to client X and 1.4% to client Y. This most likely indicates that:",o:["Client X is trading bonds and client Y is trading equities","Client X is a UK client and client Y is offshore","Client X is execution-only and client Y is receiving research or advisory services","Client X is an institutional client and client Y is retail"],a:2},
+{ch:5,n:"Secondary Markets",r:"5.4.1",q:"If the Dow divisor used to calculate the DJIA is 0.25, a $1 price change in a single component stock will trigger an index movement of:",o:["2.5 points","4 points","10 points","25 points"],a:1},
+{ch:5,n:"Secondary Markets",r:"5.4.1",q:"A free float calculation excludes which of the following?",o:["Shares held under an ADR scheme","Shares held within a nominee company","Insider holdings and restricted shares","Shares held by shareholders with less than 3% of total shares"],a:2},
+{ch:5,n:"Secondary Markets",r:"5.5.1",q:"A key feature of Gilt Inter-Dealer Brokers (IDBs) is that they:",o:["Do not charge any fees for their services","Operate exclusively as government institutions","Arrange deals anonymously between market participants","Only operate in dark pools or systematic internalisers"],a:2},
+{ch:6,n:"Corporate Actions",r:"6.2.1",q:"A bond where a single repayment is made on the specified maturity date is known as:",o:["A sinking fund bond","A convertible bond","A bullet bond","A callable bond"],a:2},
+{ch:6,n:"Corporate Actions",r:"6.3.1",q:"Pre-emptive rights entitle existing shareholders to:",o:["Receive nil-paid shares when the company makes a placing","Subscribe for shares in a rights issue pro rata to their existing holding","Vote at annual general meetings","Receive a dividend if the company makes a profit"],a:1},
+{ch:6,n:"Corporate Actions",r:"6.3.2",q:"ABC plc carries out a 1-for-4 rights issue. The cum-rights price is 500p and the rights issue price is 300p. What is the theoretical ex-rights price?",o:["440p","460p","480p","420p"],a:0},
+{ch:6,n:"Corporate Actions",r:"6.3.2",q:"Using the calculation for nil-paid rights, which formula correctly determines the number of nil-paid rights to be sold to take up the balance at nil cost?",o:["Issue price × shares allocated ÷ theoretical ex-rights price","Current market price × shares allocated ÷ issue price","Issue price × shares allocated ÷ current market price","Theoretical ex-rights price × shares allocated ÷ issue price"],a:0},
+{ch:6,n:"Corporate Actions",r:"6.4.1",q:"In which type of Eurobond issue is the lead manager MOST likely to place the entire deal without forming a syndicate?",o:["A fixed price re-offer","A bought deal","An auction","An offer for subscription"],a:1},
+{ch:6,n:"Corporate Actions",r:"6.4.2",q:"Why might an organisation build a strategic stake in a listed company?",o:["To reduce market liquidity in that company's shares","To exert influence over the other company's decision-making","To force an immediate merger","To increase the target company's share price artificially"],a:1},
+{ch:6,n:"Corporate Actions",r:"6.4.2",q:"An investor holds 4% of a company's shares and has disclosed this. The investor must make a further notification if:",o:["The holding rises to 4.75%","The holding falls to 2.95%","Any call options are acquired on the shares","The holding remains unchanged for 30 days"],a:1},
+{ch:7,n:"Clearing & Settlement",r:"7.1.4",q:"When a nominee company takes registered title to shares on behalf of a client, it becomes the:",o:["Beneficial owner","Appointed proxy","Legal owner","Sub-registrar"],a:2},
+{ch:7,n:"Clearing & Settlement",r:"7.1.5",q:"The primary use of a designation on an account is:",o:["As a legal appendage to the account holder's identity","As a reference to identify the account","To identify the underlying beneficial owner in a pooled account","To identify stock held by nominees only"],a:1},
+{ch:7,n:"Clearing & Settlement",r:"7.1.6",q:"After a security has gone ex-dividend, what is the last business day on which it can be dealt special cum dividend?",o:["The day before the books closing date","The books closing date","The day before the payment date","The payment date"],a:2},
+{ch:7,n:"Clearing & Settlement",r:"7.1.6",q:"An investor bought shares on a special ex basis during the cum-dividend period. The reason for doing so was most likely to:",o:["Minimise market risk","Maximise portfolio diversification","Reduce a potential tax liability","Boost an immediate income payment"],a:2},
+{ch:7,n:"Clearing & Settlement",r:"7.1.7",q:"What is the MAIN purpose of continuous linked settlement (CLS)?",o:["To reflect all currency price movements in a trade","To remove market risk from the trading process","To ensure matching currency payments are made simultaneously","To minimise processing costs"],a:2},
+{ch:7,n:"Clearing & Settlement",r:"7.1.7",q:"A risk of foreign exchange transactions is that one party settles but the other fails to do so. Which mechanism offers BEST protection against this?",o:["Cash against documents","Straight through processing","Payment versus payment","CHAPS"],a:2},
+{ch:7,n:"Clearing & Settlement",r:"7.2.1",q:"Securities lending generally:",o:["Provides introductions from institutions to lenders","Provides liquidity to the market","Generates income for companies requiring finance","Lends stock to companies requiring capital"],a:1},
+{ch:7,n:"Clearing & Settlement",r:"7.2.2",q:"What is the key difference between stock lending and repurchase agreements (repos)?",o:["Under stock lending, a fee is charged to the borrower; under repos it is not","Under a repo, a fee is charged to the borrower","Under stock lending, collateral is not required","Under a repo, legal title to assets does not transfer"],a:0},
+{ch:8,n:"Accounting Analysis",r:"8.1.3",q:"A company MUST include a minority interest in its consolidated accounts when:",o:["One shareholder represents more than 10% but less than 30% of voting rights","The parent company does not wholly own a subsidiary","There is a significant number of individual investors","Net assets are held by private rather than institutional investors"],a:1},
+{ch:8,n:"Accounting Analysis",r:"8.1.4",q:"Positive purchased goodwill is recorded under which heading in a group Statement of Financial Position?",o:["Current assets","Non-current assets","Current liabilities","Non-current liabilities"],a:1},
+{ch:8,n:"Accounting Analysis",r:"8.1.4",q:"Company X shows a value for goodwill in its group accounts. This confirms that:",o:["It has sold a former subsidiary at a profit","It has a controlling interest in a highly profitable subsidiary","It holds a minority interest in a failing subsidiary","It paid more for a subsidiary than that subsidiary's net assets were worth at acquisition"],a:3},
+{ch:8,n:"Accounting Analysis",r:"8.2.1",q:"Following an annual revaluation, a company's land assets have declined in value. How is this reflected in the Statement of Financial Position?",o:["Amortisation is increased","Depreciation is increased","Depreciation is decreased","The revaluation reserve is decreased"],a:3},
+{ch:8,n:"Accounting Analysis",r:"8.2.1",q:"Under which heading in the Statement of Financial Position would you expect to find prepayments?",o:["Fixed assets","Current assets","Reserves","Current liabilities"],a:1},
+{ch:8,n:"Accounting Analysis",r:"8.2.2",q:"In order to calculate the depreciation of an asset, a company must identify both its:",o:["Annual contribution to profit and expected replacement cost","Ongoing market value and anticipated replacement date","Disposal value and annual running costs","Useful business lifespan and non-recoverable cost"],a:3},
+{ch:8,n:"Accounting Analysis",r:"8.4.1",q:"Which of the following is a required heading in a statement of cash flows?",o:["Bank account summary","Taxation liabilities","Investing activities","Loan and debt statement"],a:2},
+{ch:8,n:"Accounting Analysis",r:"8.4.1",q:"Within a cash flow statement, dividends received should appear under which heading?",o:["Income collection","Inflow cash","Investing activities","Cash generation profit"],a:2},
+{ch:8,n:"Accounting Analysis",r:"8.4.2",q:"Which of the following is a key difference when comparing a company's profit with its cash position?",o:["Cash received always exceeds cash paid","Revenue is recognised at the point of sale rather than when cash is received","Profit is based on cash paid rather than expenditure incurred","Purchase of a non-tangible asset is gradually paid in cash over a period"],a:1},
+{ch:8,n:"Accounting Analysis",r:"8.4.3",q:"What type of cash flow is 'free cash flow to equity' known as?",o:["Equity cash flow","Dividend cash flow","Investment cash flow","Repayment cash flow"],a:0},
+{ch:8,n:"Accounting Analysis",r:"8.4.3",q:"As an alternative to using a cash flow statement to calculate free cash flow, which of the following is often used?",o:["Statement of Financial Position","Debtors ledger and bank balances","Income statement","Expenditure calculations"],a:2},
+{ch:8,n:"Accounting Analysis",r:"8.6.3",q:"For what MAIN reason is ratio analysis carried out on a company's financial statements?",o:["To manage conflicts of interest","To calculate dividend payments","To assist in interpreting the financial data","To predict future financial performance with certainty"],a:2},
+{ch:8,n:"Accounting Analysis",r:"8.6.5",q:"What does the Return on Capital Employed (ROCE) ratio represent?",o:["A comparison of annual return with investment return","Profit after tax divided by total equity","It compares money invested in the business with the returns generated","Profit after tax divided by total equity plus non-current liabilities"],a:2},
+{ch:8,n:"Accounting Analysis",r:"8.6.7",q:"The ratio of Enterprise Value to EBIT represents:",o:["The cost of purchasing a business from its security holders relative to its net revenue","The total market capitalisation including cash, over gross revenue","The cost of purchasing a business relative to its gross revenue","Total market capitalisation excluding cash, over net revenue"],a:0},
+{ch:8,n:"Accounting Analysis",r:"8.2.2",q:"Which of the following items is classified as a non-current asset on the Statement of Financial Position?",o:["Trade receivables due within 12 months","Cash and cash equivalents","Prepayments due within 12 months","Property, plant and equipment"],a:3},
+{ch:8,n:"Accounting Analysis",r:"8.1.3",q:"A company has a wholly owned subsidiary and a 60% stake in another company. Which statement is TRUE regarding the 60%-owned company?",o:["It need not be consolidated as the parent does not have full ownership","A minority interest of 40% must be recognised in the consolidated accounts","Only 60% of assets and liabilities should be included on a pro-rata basis","The investment should be treated as an associate, not a subsidiary"],a:1},
+{ch:9,n:"Investment Management",r:"9.1.1",q:"To assess the default risk of a company, an investment analyst should primarily use:",o:["Counterparty risk analysis","Regression analysis","Gearing ratios","Credit ratings"],a:3},
+{ch:9,n:"Investment Management",r:"9.1.1",q:"Which type of risk is associated with the potential collapse of a financial market as a whole?",o:["Counterparty risk","Liquidity risk","Settlement risk","Systematic risk"],a:3},
+{ch:9,n:"Investment Management",r:"9.1.3",q:"Which of the following BEST describes why an investor would invest in a money market fund?",o:["To obtain a short-term, low-risk return","To invest primarily in government securities for capital growth","To hedge against a falling equity market","To obtain a medium-risk return with daily liquidity"],a:0},
+{ch:9,n:"Investment Management",r:"9.1.3",q:"During times of economic uncertainty, which of the following is MOST likely to be regarded as a safe haven investment?",o:["Equities","Long-dated bonds","Short-dated bonds","Treasury Bills"],a:3},
+{ch:9,n:"Investment Management",r:"9.1.5",q:"What are the key risks evident when a UK investor purchases overseas sovereign bonds?",o:["Country risk and exchange rate risk","Counterparty risk and country risk","Counterparty risk and liquidity risk","Exchange rate risk and liquidity risk"],a:0},
+{ch:9,n:"Investment Management",r:"9.1.6",q:"The risk that can be eliminated from equity investment through diversification into a number of different shares is known as:",o:["Market risk","Systemic risk","Unsystematic risk","Systematic risk"],a:2},
+{ch:9,n:"Investment Management",r:"9.1.9",q:"In the event of a liquidation, which type of debt has the highest claim priority relative to more junior forms of borrowing and equity?",o:["Principal","Primary","Senior secured","Convertible"],a:2},
+{ch:9,n:"Investment Management",r:"9.2.1",q:"Life insurance companies generally invest for their long-term liabilities with a heavy weighting in which asset class?",o:["Equities","Fixed income","Derivatives","Money market instruments"],a:0},
+{ch:9,n:"Investment Management",r:"9.2.1",q:"Which of the following is MOST likely to establish a fund that maintains a short-term liability profile with very low risk and low returns?",o:["Trustees of pension funds","Life assurance companies","Managers of collective investment schemes","General insurance companies"],a:3},
+{ch:9,n:"Investment Management",r:"9.2.2",q:"How do listed companies MOST commonly satisfy EU Transparency Regulations when disseminating inside information?",o:["By using a primary information provider","By issuing an interim financial statement","By using a secondary information provider","By making a statutory announcement to shareholders only"],a:0},
+{ch:9,n:"Investment Management",r:"9.3.2",q:"Which passive bond strategy constructs a portfolio whose cash flows from coupons and principal redemptions are synchronised to match those of identified liabilities?",o:["Cash matching","Duration-based immunisation","Policy switching","Anomaly switching"],a:0},
+{ch:9,n:"Investment Management",r:"9.3.1",q:"Which of the following is an advantage of active investment management?",o:["Lower management fees than passive strategies","Guaranteed outperformance of a benchmark","The ability to take defensive positions when asset prices appear likely to fall","Automatic rebalancing in line with the index"],a:2},
+{ch:9,n:"Investment Management",r:"9.3.2",q:"Smart beta investment strategies differ from traditional passive strategies in that they:",o:["Simply replicate a market-cap weighted index at minimum cost","Use alternative weighting systems such as equal weighting or dividend weighting","Guarantee outperformance of the benchmark index","Eliminate all forms of systematic risk"],a:1},
+{ch:9,n:"Investment Management",r:"9.2.1",q:"Which of the following institutional investors is MOST likely to hold a significant weighting in long-dated fixed income assets to match long-term liabilities?",o:["General insurance company","Hedge fund","Pension fund","Money market fund"],a:2}
+];
+var cur=0,answers=[],revealed=[],examMode=true,sLeft=7200,ti=null;
+var L=['A','B','C','D'];
+document.getElementById('startBtn').addEventListener('click',startExam);
+document.getElementById('submitBtn').addEventListener('click',confirmSubmit);
+document.getElementById('reviewBtn').addEventListener('click',reviewAnswers);
+document.getElementById('retakeBtn').addEventListener('click',restartExam);
+function startExam(){answers=new Array(Q.length).fill(null);revealed=new Array(Q.length).fill(false);document.getElementById('cover').style.display='none';document.getElementById('exam-shell').style.display='block';buildGrid();renderQ(0);ti=setInterval(tick,1000);}
+function tick(){sLeft--;if(sLeft<=0){clearInterval(ti);submitExam();return;}var h=Math.floor(sLeft/3600),m=Math.floor((sLeft%3600)/60),s=sLeft%60;var d=document.getElementById('tmr');d.textContent=h+':'+p2(m)+':'+p2(s);if(sLeft<=600)d.classList.add('warn');else d.classList.remove('warn');}
+function p2(n){return n<10?'0'+n:''+n;}
+function buildGrid(){var g=document.getElementById('grid');g.innerHTML='';for(var i=0;i<Q.length;i++){(function(idx){var d=document.createElement('div');d.className='qdot'+(idx===0?' cur':'');d.id='d'+idx;d.textContent=idx+1;d.addEventListener('click',function(){goTo(idx);});g.appendChild(d);})(i);}}
+function upDot(i){var d=document.getElementById('d'+i);if(!d)return;d.className='qdot';if(i===cur)d.classList.add('cur');if(!examMode&&answers[i]!==null)d.classList.add(answers[i]===Q[i].a?'ok':'bad');else if(answers[i]!==null)d.classList.add('ans');}
+function renderQ(idx){cur=idx;var q=Q[idx];var p=document.getElementById('qpanel');var oh='';for(var i=0;i<q.o.length;i++){var c='opt';if(!examMode&&revealed[idx]){if(i===q.a)c+=' show-right';else if(i===answers[idx]&&answers[idx]!==q.a)c+=' wrong';else c+=' dis';}else if(answers[idx]===i)c+=' sel';oh+='<div class="'+c+'" data-i="'+i+'"><div class="opt-l">'+L[i]+'</div><div class="opt-t">'+q.o[i]+'</div></div>';}
+var fb='';if(!examMode&&revealed[idx]&&answers[idx]!==null){var ok=answers[idx]===q.a;fb='<div class="feedback '+(ok?'ok':'bad')+'">'+(ok?'&#10003; Correct':'&#10007; Incorrect &mdash; correct answer: <strong>'+L[q.a]+': '+q.o[q.a]+'</strong>')+'<br><small style="opacity:0.65;display:block;margin-top:4px">Syllabus ref: '+q.r+'</small></div>';}
+var ac=answers.filter(function(a){return a!==null;}).length;var nr=idx<Q.length-1?'<button class="nbtn p" id="nb">Next &#8594;</button>':'<button class="nbtn p" id="sq">Submit Exam</button>';p.innerHTML='<div class="ch-tag">Ch'+q.ch+' &middot; '+q.n+'</div><div class="qnum">Question '+(idx+1)+' of '+Q.length+'</div><div class="qtext">'+q.q+'</div><div class="opts">'+oh+'</div>'+fb+'<div class="qnav"><button class="nbtn" id="pb"'+(idx===0?' disabled':'')+'>&#8592; Previous</button><span style="font-size:12px;color:var(--muted)">'+ac+'/'+Q.length+' answered</span>'+nr+'</div>';
+document.getElementById('qn').textContent=idx+1;document.getElementById('prog').style.width=(((idx+1)/Q.length)*100)+'%';
+var os=p.querySelectorAll('.opt');for(var k=0;k<os.length;k++){(function(el,oi){el.addEventListener('click',function(){pick(oi);});})(os[k],parseInt(os[k].getAttribute('data-i')));}
+var pb=document.getElementById('pb');if(pb)pb.addEventListener('click',function(){goTo(cur-1);});var nb=document.getElementById('nb');if(nb)nb.addEventListener('click',function(){goTo(cur+1);});var sq=document.getElementById('sq');if(sq)sq.addEventListener('click',confirmSubmit);
+for(var n=0;n<Q.length;n++)upDot(n);}
+function pick(i){if(revealed[cur])return;answers[cur]=i;if(!examMode)revealed[cur]=true;renderQ(cur);}
+function goTo(i){if(i<0||i>=Q.length)return;renderQ(i);}
+function confirmSubmit(){var u=answers.filter(function(a){return a===null;}).length;if(u>0&&!confirm(u+' question(s) unanswered. Submit anyway?'))return;submitExam();}
+function submitExam(){clearInterval(ti);examMode=false;for(var i=0;i<Q.length;i++)if(answers[i]!==null)revealed[i]=true;showResults();}
+function showResults(){document.getElementById('exam-shell').style.display='none';document.getElementById('res').style.display='block';var sc=Q.reduce(function(a,q,i){return a+(answers[i]===q.a?1:0);},0);var pass=sc>=70;var v=document.getElementById('verdict');v.textContent=pass?'PASS':'FAIL';v.style.color=pass?'#4ade80':'#f87171';document.getElementById('score').textContent=sc+'/'+Q.length;var used=7200-sLeft,h=Math.floor(used/3600),m=Math.floor((used%3600)/60),s=used%60;document.getElementById('rdetail').textContent=sc+'% &middot; Pass mark 70% &middot; Time used: '+h+'h '+p2(m)+'m '+p2(s)+'s';var chs={};Q.forEach(function(q,i){if(!chs[q.ch])chs[q.ch]={n:q.n,t:0,c:0};chs[q.ch].t++;if(answers[i]===q.a)chs[q.ch].c++;});var html='';Object.keys(chs).forEach(function(ch){var d=chs[ch],pct=Math.round((d.c/d.t)*100);var col=pct>=70?'#166534':pct>=50?'#92400e':'#991b1b';html+='<div class="chrow"><div class="chname"><strong>Ch'+ch+'</strong> '+d.n+'</div><div class="chbar"><div class="chbar-f" style="width:'+pct+'%;background:'+col+'"></div></div><div class="chsc" style="color:'+col+'">'+d.c+'/'+d.t+'</div></div>';});document.getElementById('chbd').innerHTML=html;}
+function reviewAnswers(){document.getElementById('res').style.display='none';document.getElementById('exam-shell').style.display='block';examMode=false;for(var i=0;i<Q.length;i++)revealed[i]=true;renderQ(0);}
+function restartExam(){answers=new Array(Q.length).fill(null);revealed=new Array(Q.length).fill(false);examMode=true;sLeft=7200;document.getElementById('res').style.display='none';document.getElementById('tmr').textContent='2:00:00';document.getElementById('tmr').classList.remove('warn');document.getElementById('exam-shell').style.display='block';buildGrid();renderQ(0);ti=setInterval(tick,1000);}
+</script>
+</body>
+</html>

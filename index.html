@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CISI Securities Level 3 — Practice Examinations</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1a1a2e;--paper:#f5f3ef;--gold:#c9971c;--deep:#0a1628;--muted:#6b7280;--border:#e0dbd2}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
+
+header{background:linear-gradient(135deg,var(--deep) 0%,#0d2040 60%,#162a50 100%);padding:64px 24px 56px;text-align:center;position:relative;overflow:hidden}
+header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23c9971c' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hdr-inner{position:relative;z-index:1}
+.hdr-badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,151,28,0.4);padding:5px 16px;border-radius:2px;margin-bottom:28px}
+header h1{font-size:clamp(32px,6vw,64px);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1;margin-bottom:10px}
+header p{font-size:clamp(14px,2vw,18px);color:rgba(255,255,255,0.45);font-weight:300;letter-spacing:1px;margin-bottom:40px}
+.hdr-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap}
+.hdr-stat .n{font-size:36px;font-weight:800;color:var(--gold);display:block;line-height:1}
+.hdr-stat .l{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+
+main{max-width:900px;margin:0 auto;padding:56px 20px 80px}
+.section-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+
+.papers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:20px;margin-bottom:56px}
+.paper-card{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:16px;transition:all 0.2s;text-decoration:none;color:inherit}
+.paper-card:hover{border-color:var(--gold);box-shadow:0 8px 32px rgba(201,151,28,0.12);transform:translateY(-2px)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.card-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(201,151,28,0.08);border:1px solid rgba(201,151,28,0.25);padding:3px 10px;border-radius:2px}
+.card-num{font-size:48px;font-weight:800;color:var(--border);line-height:1}
+.card-title{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-0.5px}
+.card-sub{font-size:13px;color:var(--muted);font-weight:400}
+.card-meta{display:flex;gap:20px}
+.card-meta-item{font-size:12px;color:var(--muted)}
+.card-meta-item strong{color:var(--ink);font-weight:700}
+.card-btn{display:inline-flex;align-items:center;gap:8px;background:var(--deep);color:#fff;padding:11px 24px;border-radius:4px;font-size:13px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;transition:all 0.15s;margin-top:4px;width:fit-content}
+.card-btn:hover{background:#162a50}
+.card-btn svg{width:14px;height:14px;flex-shrink:0}
+
+.info-box{background:#fff;border:1.5px solid var(--border);border-radius:8px;padding:28px 32px}
+.info-box h3{font-size:16px;font-weight:800;margin-bottom:16px;color:var(--ink)}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.info-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);line-height:1.5}
+.info-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px}
+
+footer{text-align:center;padding:24px;font-size:12px;color:var(--muted);border-top:1px solid var(--border)}
+
+@media(max-width:480px){.papers-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr-inner">
+    <div class="hdr-badge">CISI · Capital Markets Programme · Level 3</div>
+    <h1>Securities</h1>
+    <p>Practice Examination Suite</p>
+    <div class="hdr-stats">
+      <div class="hdr-stat"><span class="n">4</span><div class="l">Papers</div></div>
+      <div class="hdr-stat"><span class="n">400</span><div class="l">Questions</div></div>
+      <div class="hdr-stat"><span class="n">8h</span><div class="l">Practice Time</div></div>
+      <div class="hdr-stat"><span class="n">70%</span><div class="l">Pass Mark</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="section-title">Select a Paper</div>
+  <div class="papers-grid">
+    <a class="paper-card" href="exam1.html">
+      <div class="card-top">
+        <div class="card-label">Version A</div>
+        <div class="card-num">01</div>
+      </div>
+      <div>
+        <div class="card-title">Practice Paper 1</div>
+        <div class="card-sub">Core fundamentals across all 9 chapters</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-meta-item"><strong>100</strong> questions</div>
+        <div class="card-meta-item"><strong>2 hours</strong> allowed</div>
+        <div class="card-meta-item"><strong>9</strong> chapters</div>
+      </div>
+      <div class="card-btn">Start Exam <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+    <a class="paper-card" href="exam2.html">
+      <div class="card-top">
+        <div class="card-label">Version B</div>
+        <div class="card-num">02</div>
+      </div>
+      <div>
+        <div class="card-title">Practice Paper 2</div>
+        <div class="card-sub">Debt instruments, ETFs & accounting depth</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-meta-item"><strong>100</strong> questions</div>
+        <div class="card-meta-item"><strong>2 hours</strong> allowed</div>
+        <div class="card-meta-item"><strong>9</strong> chapters</div>
+      </div>
+      <div class="card-btn">Start Exam <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+    <a class="paper-card" href="exam3.html">
+      <div class="card-top">
+        <div class="card-label">Version C</div>
+        <div class="card-num">03</div>
+      </div>
+      <div>
+        <div class="card-title">Practice Paper 3</div>
+        <div class="card-sub">SPVs, carry trade, STRIPS & smart beta</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-meta-item"><strong>100</strong> questions</div>
+        <div class="card-meta-item"><strong>2 hours</strong> allowed</div>
+        <div class="card-meta-item"><strong>9</strong> chapters</div>
+      </div>
+      <div class="card-btn">Start Exam <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+    <a class="paper-card" href="exam4.html">
+      <div class="card-top">
+        <div class="card-label">Version D</div>
+        <div class="card-num">04</div>
+      </div>
+      <div>
+        <div class="card-title">Practice Paper 4</div>
+        <div class="card-sub">Takeovers, CCP novation, leveraged ETFs & more</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-meta-item"><strong>100</strong> questions</div>
+        <div class="card-meta-item"><strong>2 hours</strong> allowed</div>
+        <div class="card-meta-item"><strong>9</strong> chapters</div>
+      </div>
+      <div class="card-btn">Start Exam <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </a>
+  </div>
+
+  <div class="info-box">
+    <h3>Exam Information</h3>
+    <div class="info-grid">
+      <div class="info-item"><div class="info-dot"></div>Each paper contains 100 multiple-choice questions</div>
+      <div class="info-item"><div class="info-dot"></div>Time allowed: 2 hours per paper</div>
+      <div class="info-item"><div class="info-dot"></div>Pass mark: 70 out of 100</div>
+      <div class="info-item"><div class="info-dot"></div>All questions based on CISI Securities Edition 21</div>
+      <div class="info-item"><div class="info-dot"></div>After submitting, review mode shows correct answers and syllabus references</div>
+      <div class="info-item"><div class="info-dot"></div>Chapter performance breakdown shown on results screen</div>
+      <div class="info-item"><div class="info-dot"></div>Questions weighted by chapter to match real exam distribution</div>
+      <div class="info-item"><div class="info-dot"></div>No questions are repeated across papers</div>
+    </div>
+  </div>
+</main>
+
+<footer>CISI Securities Level 3 Practice Suite &middot; Based on Syllabus Version 25.0 &middot; For study purposes only</footer>
+</body>
+</html>
