@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CISI Securities L3 — Flashcard Deck</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#1a1a2e;--paper:#f5f3ef;--gold:#c9971c;--deep:#0a1628;--blue:#1e3a5f;--border:#e0dbd2;--muted:#6b7280}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
+header{background:linear-gradient(135deg,var(--deep) 0%,#0d2040 60%,#162a50 100%);padding:44px 24px 32px;color:#fff;text-align:center}
+header h1{font-size:clamp(32px,6vw,52px);font-weight:800;margin-bottom:12px}
+header p{font-size:15px;color:rgba(255,255,255,0.8);max-width:760px;margin-inline:auto;line-height:1.7}
+main{max-width:920px;margin:0 auto;padding:32px 20px 60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--gold);font-weight:700;text-decoration:none;margin-bottom:28px}
+.deck-shell{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:32px;box-shadow:0 20px 40px rgba(0,0,0,0.06)}
+.deck-header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.deck-title{font-size:28px;font-weight:800;color:var(--ink);line-height:1.1}
+.deck-desc{font-size:14px;color:var(--muted);max-width:720px;line-height:1.8}
+.card-shell{min-height:240px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:36px 24px;border:1px solid var(--border);border-radius:16px;background:var(--paper);margin-bottom:24px}
+.card-side{font-size:20px;font-weight:700;color:var(--deep);margin-bottom:18px}
+.card-text{font-size:18px;line-height:1.8;color:var(--ink);max-width:760px}
+.controls{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{padding:12px 20px;border-radius:999px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s}
+.btn-primary{background:var(--deep);color:#fff}
+.btn-primary:hover{background:#12213d}
+.btn-secondary{background:#fff;color:var(--deep);border:1px solid var(--border)}
+.btn-secondary:hover{background:#f7f7f5}
+.warning{background:#fff3cd;border:1px solid #ffeeba;color:#856404;padding:14px 18px;border-radius:12px;margin-bottom:20px}
+.note{font-size:13px;color:var(--muted);line-height:1.7}
+.hidden{display:none}
+@media(max-width:640px){.deck-header{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<header>
+  <div class="back-link"><a href="flashcards.html" style="color:inherit;text-decoration:none;">← Back to flashcards</a></div>
+  <h1 id="deckName">Flashcard Deck</h1>
+  <p id="deckDescription">Study chapter flashcards one card at a time. Use the controls below to show the answer, move next, or go back.</p>
+</header>
+<main>
+  <div class="deck-shell">
+    <div id="emptyState" class="warning hidden">
+      <strong>No cards loaded yet.</strong>
+      <p class="note">Export your Anki chapter deck to CSV or JSON and paste the cards into the <code>decks</code> object in this file, or ask me to help convert your Anki export.</p>
+    </div>
+    <div id="deckContent">
+      <div class="card-shell">
+        <div class="card-side" id="cardSide">Question</div>
+        <div class="card-text" id="cardText"></div>
+      </div>
+      <div class="controls">
+        <button id="prevBtn" class="btn btn-secondary">Previous</button>
+        <button id="flipBtn" class="btn btn-primary">Show Answer</button>
+        <button id="nextBtn" class="btn btn-secondary">Next</button>
+      </div>
+      <p class="note" id="progressText"></p>
+    </div>
+  </div>
+</main>
+<script>
+const chapterMeta = {
+  1: {name:'Financial Services Industry', description:'Overview of the financial services sector, key participants, and market structure.'},
+  2: {name:'Asset Classes', description:'Different types of financial assets and their characteristics.'},
+  3: {name:'Markets', description:'Primary and secondary markets, trading mechanisms, and market participants.'},
+  4: {name:'Primary Markets', description:'New securities issuance, IPOs, and capital raising mechanisms.'},
+  5: {name:'Secondary Markets', description:'Trading existing securities, order types, and market efficiency.'},
+  6: {name:'Corporate Actions', description:'Dividends, share issues, takeovers, and corporate restructuring.'},
+  7: {name:'Clearing and Settlement', description:'Post-trade processes, clearing houses, and settlement systems.'},
+  8: {name:'Accounting Analysis', description:'Financial statement analysis and accounting principles.'},
+  9: {name:'Investment Management', description:'Portfolio management, investment strategies, and risk assessment.'}
+};
+
+const decks = {
+  1: [
+    {q:'What is the primary role of investment banks?', a:'To facilitate capital raising, provide advisory services, and engage in trading activities.'},
+    {q:'What are the main types of financial markets?', a:'Primary markets (new securities issuance) and secondary markets (trading existing securities).'},
+    {q:'What is the difference between retail and institutional investors?', a:'Retail investors are individuals investing personal funds, while institutional investors are organizations like pension funds, insurance companies, and asset managers.'},
+    {q:'What is a market maker?', a:'A dealer who provides liquidity by continuously quoting both buy (bid) and sell (ask) prices for securities.'},
+    {q:'What is the role of a central bank?', a:'To maintain monetary stability, regulate the banking system, and act as lender of last resort.'},
+    {q:'What is the capital markets ecosystem?', a:'The interconnected network of issuers, investors, intermediaries, and regulators that facilitate the flow of capital.'}
+  ],
+  2: [
+    {q:'What is an equity security?', a:'A security representing ownership in a company, such as ordinary shares or common stock.'},
+    {q:'What is a dividend?', a:'A portion of a company\'s profits distributed to shareholders, usually as cash payments.'},
+    {q:'What is market capitalization?', a:'The total value of a company\'s outstanding shares (share price × number of shares outstanding).'},
+    {q:'What is the difference between ordinary and preference shares?', a:'Ordinary shares have voting rights and variable dividends, while preference shares have priority claims on dividends and assets but usually no voting rights.'},
+    {q:'What is a rights issue?', a:'When a company offers existing shareholders the right to buy additional shares at a discount to raise capital.'},
+    {q:'What is a share split?', a:'When a company divides its existing shares into multiple shares to increase liquidity and accessibility.'}
+  ],
+  3: [
+    {q:'What is a bond?', a:'A debt instrument where an investor lends money to an issuer for a defined period at a fixed or variable interest rate.'},
+    {q:'What is yield to maturity (YTM)?', a:'The total return expected on a bond if held until maturity, expressed as an annual rate that accounts for coupon payments and capital gain/loss.'},
+    {q:'What is the difference between nominal and real interest rates?', a:'Nominal rate is the stated interest rate, real rate is nominal rate minus inflation rate.'},
+    {q:'What is duration?', a:'A measure of a bond\'s sensitivity to interest rate changes, expressed in years.'},
+    {q:'What is a zero-coupon bond?', a:'A bond that pays no periodic interest but is issued at a discount and redeemed at face value.'},
+    {q:'What is credit risk?', a:'The risk that the bond issuer will default on interest payments or principal repayment.'}
+  ],
+  4: [
+    {q:'What is a derivative?', a:'A financial instrument whose value is derived from an underlying asset, index, or reference rate.'},
+    {q:'What are the main types of derivatives?', a:'Futures, options, forwards, and swaps.'},
+    {q:'What is hedging?', a:'Using derivatives to reduce or eliminate financial risk by taking an offsetting position.'},
+    {q:'What is the difference between a call and put option?', a:'A call option gives the right to buy the underlying asset, while a put option gives the right to sell.'},
+    {q:'What is leverage in derivatives?', a:'The ability to control a large position with a small amount of capital, amplifying both gains and losses.'},
+    {q:'What is a futures contract?', a:'A standardized agreement to buy or sell an asset at a predetermined price on a specific future date.'}
+  ],
+  5: [
+    {q:'What is an ETF?', a:'An exchange-traded fund that tracks a basket of assets and trades like a stock on an exchange.'},
+    {q:'What is a mutual fund?', a:'A pooled investment vehicle that invests in a diversified portfolio of securities and is managed by a professional fund manager.'},
+    {q:'What is the difference between active and passive investing?', a:'Active investing attempts to outperform the market through security selection, passive investing tracks market indices.'},
+    {q:'What is an index fund?', a:'A mutual fund or ETF designed to replicate the performance of a specific market index.'},
+    {q:'What is a hedge fund?', a:'A private investment fund that uses advanced strategies and can employ leverage, short selling, and derivatives.'},
+    {q:'What is a structured product?', a:'A pre-packaged investment with a derivative component that offers exposure to underlying assets with defined risk-return profiles.'}
+  ],
+  6: [
+    {q:'What is MiFID II?', a:'Markets in Financial Instruments Directive II - EU regulation that harmonizes investment services regulation across Europe.'},
+    {q:'What is the suitability principle?', a:'Investment recommendations must be suitable for the client\'s knowledge, experience, financial situation, and risk tolerance.'},
+    {q:'What is market abuse?', a:'Market manipulation, insider dealing, or dissemination of false or misleading information.'},
+    {q:'What is best execution?', a:'The obligation to take reasonable steps to obtain the best possible result for clients when executing orders.'},
+    {q:'What is a conflict of interest?', a:'A situation where an adviser\'s personal interests could influence their professional judgment.'},
+    {q:'What is client categorization?', a:'Classifying clients as retail, professional, or eligible counterparties to determine the level of regulatory protection required.'}
+  ],
+  7: [
+    {q:'What is a takeover?', a:'When one company acquires control of another by purchasing a controlling stake in its shares.'},
+    {q:'What is a rights issue?', a:'When a company offers existing shareholders the right to buy additional shares at a discount to raise capital.'},
+    {q:'What is corporate governance?', a:'The system of rules, practices, and processes directing and controlling a company\'s management and operations.'},
+    {q:'What is a dividend?', a:'A distribution of profits to shareholders, usually as cash payments.'},
+    {q:'What is share buyback?', a:'When a company repurchases its own shares from the market, reducing the number of outstanding shares.'},
+    {q:'What is a merger?', a:'The combination of two companies to form a new entity, typically through mutual agreement.'}
+  ],
+  8: [
+    {q:'What is settlement?', a:'The process of transferring securities from seller to buyer and payment from buyer to seller.'},
+    {q:'What is T+2 settlement?', a:'Trade date plus 2 business days, the standard settlement cycle for most equity transactions.'},
+    {q:'What is a central counterparty (CCP)?', a:'An entity that interposes itself between counterparties to a transaction, becoming the buyer to every seller and seller to every buyer.'},
+    {q:'What is a clearing house?', a:'An intermediary that provides clearing and settlement services, guaranteeing the performance of trades.'},
+    {q:'What is a custodian?', a:'A financial institution that holds securities in safekeeping for investors and provides related services.'},
+    {q:'What is settlement risk?', a:'The risk that one party fails to deliver securities or payment as agreed.'}
+  ],
+  9: [
+    {q:'What is risk management?', a:'The process of identifying, assessing, measuring, and controlling financial risks to minimize potential losses.'},
+    {q:'What is the key principle of ethics in finance?', a:'Acting with integrity, in the best interests of clients, and maintaining professional competence.'},
+    {q:'What is a conflict of interest?', a:'A situation where personal or business interests could influence professional judgment or objectivity.'},
+    {q:'What is operational risk?', a:'The risk of loss resulting from inadequate or failed internal processes, people, systems, or external events.'},
+    {q:'What is reputational risk?', a:'The risk of damage to a firm\'s reputation that could lead to loss of business or regulatory action.'},
+    {q:'What is conduct risk?', a:'The risk of inappropriate behavior by staff that could harm customers or damage the firm\'s reputation.'}
+  ]
+};
+
+const params = new URLSearchParams(window.location.search);
+const chapter = params.get('chapter') || '1';
+const meta = chapterMeta[chapter] || chapterMeta[1];
+const cards = decks[chapter] || [];
+let currentIndex = 0;
+let showingAnswer = false;
+
+const deckName = document.getElementById('deckName');
+const deckDescription = document.getElementById('deckDescription');
+const cardSide = document.getElementById('cardSide');
+const cardText = document.getElementById('cardText');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const flipBtn = document.getElementById('flipBtn');
+const progressText = document.getElementById('progressText');
+const emptyState = document.getElementById('emptyState');
+const deckContent = document.getElementById('deckContent');
+
+function updateDeckInfo() {
+  deckName.textContent = meta.name;
+  deckDescription.textContent = meta.description;
+}
+
+function renderCard() {
+  if (!cards.length) {
+    emptyState.classList.remove('hidden');
+    deckContent.classList.add('hidden');
+    return;
+  }
+  emptyState.classList.add('hidden');
+  deckContent.classList.remove('hidden');
+  const card = cards[currentIndex];
+  cardSide.textContent = showingAnswer ? 'Answer' : 'Question';
+  cardText.textContent = showingAnswer ? card.a : card.q;
+  progressText.textContent = `Card ${currentIndex + 1} of ${cards.length}`;
+}
+
+prevBtn.addEventListener('click', () => {
+  if (cards.length === 0) return;
+  currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+  showingAnswer = false;
+  renderCard();
+});
+flipBtn.addEventListener('click', () => {
+  if (cards.length === 0) return;
+  showingAnswer = !showingAnswer;
+  flipBtn.textContent = showingAnswer ? 'Show Question' : 'Show Answer';
+  renderCard();
+});
+nextBtn.addEventListener('click', () => {
+  if (cards.length === 0) return;
+  currentIndex = (currentIndex + 1) % cards.length;
+  showingAnswer = false;
+  renderCard();
+});
+
+updateDeckInfo();
+renderCard();
+</script>
+</body>
+</html>
