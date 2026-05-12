@@ -122,8 +122,8 @@ function parseDeckTitle(deckName) {
   return match ? cleanText(match[1]) : deckName;
 }
 
-function setMessage(text, showNote = false) {
-  emptyState.innerHTML = `<strong>${text}</strong>${showNote ? '<p class="note">If your export file is missing or named incorrectly, place the file in the site root as <code>All Decks.csv.txt</code>.</p>' : ''}`;
+function setMessage(text, showNote = false, noteHtml = '') {
+  emptyState.innerHTML = `<strong>${text}</strong>${showNote ? '<p class="note">If your export file is missing or named incorrectly, place the file in the site root as <code>All Decks.csv.txt</code> or <code>All Decks.csv</code>.</p>' : ''}${noteHtml}`;
   emptyState.classList.remove('hidden');
   deckContent.classList.add('hidden');
 }
@@ -198,25 +198,46 @@ nextBtn.addEventListener('click', () => {
   renderCard();
 });
 
+async function tryFetchDeckFile(path) {
+  const response = await fetch(path);
+  if (!response.ok) {
+    throw new Error(`Unable to fetch ${path}: ${response.status} ${response.statusText}`);
+  }
+  return response.text();
+}
+
 async function loadFlashcards() {
-  setMessage('Loading cards from All Decks.csv.txt...');
-  try {
-    const response = await fetch('All Decks.csv.txt');
-    if (!response.ok) throw new Error('Could not fetch deck file');
-    const text = await response.text();
-    const hasCards = parseCsvFile(text);
-    updateDeckInfo();
-    if (hasCards) {
-      currentIndex = 0;
-      showingAnswer = false;
-      flipBtn.textContent = 'Show Answer';
-      renderCard();
-    } else {
-      setMessage('No flashcard rows found in the export file.', true);
+  const paths = ['All Decks.csv.txt', 'All Decks.csv'];
+  let text = null;
+  let tried = [];
+
+  setMessage('Loading cards from your flashcard export file...');
+
+  for (const path of paths) {
+    try {
+      text = await tryFetchDeckFile(path);
+      break;
+    } catch (err) {
+      tried.push(path);
     }
-  } catch (error) {
-    console.error(error);
-    setMessage('Unable to load the flashcard export file.', true);
+  }
+
+  if (text === null) {
+    const noteHtml = `<p class="note">Tried: ${tried.map(p => `<code>${p}</code>`).join(', ')}</p>`;
+    setMessage('Unable to load the flashcard export file.', true, noteHtml);
+    return;
+  }
+
+  const hasCards = parseCsvFile(text);
+  updateDeckInfo();
+
+  if (hasCards) {
+    currentIndex = 0;
+    showingAnswer = false;
+    flipBtn.textContent = 'Show Answer';
+    renderCard();
+  } else {
+    setMessage('No flashcard rows found in the export file.', true);
   }
 }
 
