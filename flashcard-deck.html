@@ -72,84 +72,20 @@ const chapterMeta = {
 };
 
 const decks = {
-  1: [
-    {q:'What is the primary role of investment banks?', a:'To facilitate capital raising, provide advisory services, and engage in trading activities.'},
-    {q:'What are the main types of financial markets?', a:'Primary markets (new securities issuance) and secondary markets (trading existing securities).'},
-    {q:'What is the difference between retail and institutional investors?', a:'Retail investors are individuals investing personal funds, while institutional investors are organizations like pension funds, insurance companies, and asset managers.'},
-    {q:'What is a market maker?', a:'A dealer who provides liquidity by continuously quoting both buy (bid) and sell (ask) prices for securities.'},
-    {q:'What is the role of a central bank?', a:'To maintain monetary stability, regulate the banking system, and act as lender of last resort.'},
-    {q:'What is the capital markets ecosystem?', a:'The interconnected network of issuers, investors, intermediaries, and regulators that facilitate the flow of capital.'}
-  ],
-  2: [
-    {q:'What is an equity security?', a:'A security representing ownership in a company, such as ordinary shares or common stock.'},
-    {q:'What is a dividend?', a:'A portion of a company\'s profits distributed to shareholders, usually as cash payments.'},
-    {q:'What is market capitalization?', a:'The total value of a company\'s outstanding shares (share price × number of shares outstanding).'},
-    {q:'What is the difference between ordinary and preference shares?', a:'Ordinary shares have voting rights and variable dividends, while preference shares have priority claims on dividends and assets but usually no voting rights.'},
-    {q:'What is a rights issue?', a:'When a company offers existing shareholders the right to buy additional shares at a discount to raise capital.'},
-    {q:'What is a share split?', a:'When a company divides its existing shares into multiple shares to increase liquidity and accessibility.'}
-  ],
-  3: [
-    {q:'What is a bond?', a:'A debt instrument where an investor lends money to an issuer for a defined period at a fixed or variable interest rate.'},
-    {q:'What is yield to maturity (YTM)?', a:'The total return expected on a bond if held until maturity, expressed as an annual rate that accounts for coupon payments and capital gain/loss.'},
-    {q:'What is the difference between nominal and real interest rates?', a:'Nominal rate is the stated interest rate, real rate is nominal rate minus inflation rate.'},
-    {q:'What is duration?', a:'A measure of a bond\'s sensitivity to interest rate changes, expressed in years.'},
-    {q:'What is a zero-coupon bond?', a:'A bond that pays no periodic interest but is issued at a discount and redeemed at face value.'},
-    {q:'What is credit risk?', a:'The risk that the bond issuer will default on interest payments or principal repayment.'}
-  ],
-  4: [
-    {q:'What is a derivative?', a:'A financial instrument whose value is derived from an underlying asset, index, or reference rate.'},
-    {q:'What are the main types of derivatives?', a:'Futures, options, forwards, and swaps.'},
-    {q:'What is hedging?', a:'Using derivatives to reduce or eliminate financial risk by taking an offsetting position.'},
-    {q:'What is the difference between a call and put option?', a:'A call option gives the right to buy the underlying asset, while a put option gives the right to sell.'},
-    {q:'What is leverage in derivatives?', a:'The ability to control a large position with a small amount of capital, amplifying both gains and losses.'},
-    {q:'What is a futures contract?', a:'A standardized agreement to buy or sell an asset at a predetermined price on a specific future date.'}
-  ],
-  5: [
-    {q:'What is an ETF?', a:'An exchange-traded fund that tracks a basket of assets and trades like a stock on an exchange.'},
-    {q:'What is a mutual fund?', a:'A pooled investment vehicle that invests in a diversified portfolio of securities and is managed by a professional fund manager.'},
-    {q:'What is the difference between active and passive investing?', a:'Active investing attempts to outperform the market through security selection, passive investing tracks market indices.'},
-    {q:'What is an index fund?', a:'A mutual fund or ETF designed to replicate the performance of a specific market index.'},
-    {q:'What is a hedge fund?', a:'A private investment fund that uses advanced strategies and can employ leverage, short selling, and derivatives.'},
-    {q:'What is a structured product?', a:'A pre-packaged investment with a derivative component that offers exposure to underlying assets with defined risk-return profiles.'}
-  ],
-  6: [
-    {q:'What is MiFID II?', a:'Markets in Financial Instruments Directive II - EU regulation that harmonizes investment services regulation across Europe.'},
-    {q:'What is the suitability principle?', a:'Investment recommendations must be suitable for the client\'s knowledge, experience, financial situation, and risk tolerance.'},
-    {q:'What is market abuse?', a:'Market manipulation, insider dealing, or dissemination of false or misleading information.'},
-    {q:'What is best execution?', a:'The obligation to take reasonable steps to obtain the best possible result for clients when executing orders.'},
-    {q:'What is a conflict of interest?', a:'A situation where an adviser\'s personal interests could influence their professional judgment.'},
-    {q:'What is client categorization?', a:'Classifying clients as retail, professional, or eligible counterparties to determine the level of regulatory protection required.'}
-  ],
-  7: [
-    {q:'What is a takeover?', a:'When one company acquires control of another by purchasing a controlling stake in its shares.'},
-    {q:'What is a rights issue?', a:'When a company offers existing shareholders the right to buy additional shares at a discount to raise capital.'},
-    {q:'What is corporate governance?', a:'The system of rules, practices, and processes directing and controlling a company\'s management and operations.'},
-    {q:'What is a dividend?', a:'A distribution of profits to shareholders, usually as cash payments.'},
-    {q:'What is share buyback?', a:'When a company repurchases its own shares from the market, reducing the number of outstanding shares.'},
-    {q:'What is a merger?', a:'The combination of two companies to form a new entity, typically through mutual agreement.'}
-  ],
-  8: [
-    {q:'What is settlement?', a:'The process of transferring securities from seller to buyer and payment from buyer to seller.'},
-    {q:'What is T+2 settlement?', a:'Trade date plus 2 business days, the standard settlement cycle for most equity transactions.'},
-    {q:'What is a central counterparty (CCP)?', a:'An entity that interposes itself between counterparties to a transaction, becoming the buyer to every seller and seller to every buyer.'},
-    {q:'What is a clearing house?', a:'An intermediary that provides clearing and settlement services, guaranteeing the performance of trades.'},
-    {q:'What is a custodian?', a:'A financial institution that holds securities in safekeeping for investors and provides related services.'},
-    {q:'What is settlement risk?', a:'The risk that one party fails to deliver securities or payment as agreed.'}
-  ],
-  9: [
-    {q:'What is risk management?', a:'The process of identifying, assessing, measuring, and controlling financial risks to minimize potential losses.'},
-    {q:'What is the key principle of ethics in finance?', a:'Acting with integrity, in the best interests of clients, and maintaining professional competence.'},
-    {q:'What is a conflict of interest?', a:'A situation where personal or business interests could influence professional judgment or objectivity.'},
-    {q:'What is operational risk?', a:'The risk of loss resulting from inadequate or failed internal processes, people, systems, or external events.'},
-    {q:'What is reputational risk?', a:'The risk of damage to a firm\'s reputation that could lead to loss of business or regulatory action.'},
-    {q:'What is conduct risk?', a:'The risk of inappropriate behavior by staff that could harm customers or damage the firm\'s reputation.'}
-  ]
+  1: [],
+  2: [],
+  3: [],
+  4: [],
+  5: [],
+  6: [],
+  7: [],
+  8: [],
+  9: []
 };
 
 const params = new URLSearchParams(window.location.search);
 const chapter = params.get('chapter') || '1';
-const meta = chapterMeta[chapter] || chapterMeta[1];
-const cards = decks[chapter] || [];
+let cards = decks[chapter] || [];
 let currentIndex = 0;
 let showingAnswer = false;
 
@@ -164,17 +100,73 @@ const progressText = document.getElementById('progressText');
 const emptyState = document.getElementById('emptyState');
 const deckContent = document.getElementById('deckContent');
 
+function cleanText(value) {
+  return value
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\u2019/g, "'")
+    .replace(/\u201c|\u201d/g, '"')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/ *\n */g, '\n')
+    .trim();
+}
+
+function parseChapterFromDeck(deckName) {
+  const match = deckName.match(/CHAPTER\s*(\d+)/i);
+  return match ? match[1] : null;
+}
+
+function parseDeckTitle(deckName) {
+  const match = deckName.match(/CHAPTER\s*\d+:?\s*(.+)$/i);
+  return match ? cleanText(match[1]) : deckName;
+}
+
+function setMessage(text, showNote = false) {
+  emptyState.innerHTML = `<strong>${text}</strong>${showNote ? '<p class="note">If your export file is missing or named incorrectly, place the file in the site root as <code>All Decks.csv.txt</code>.</p>' : ''}`;
+  emptyState.classList.remove('hidden');
+  deckContent.classList.add('hidden');
+}
+
+function parseCsvFile(raw) {
+  const lines = raw.split(/\r?\n/);
+  let foundAny = false;
+
+  for (const line of lines) {
+    if (!line || line.startsWith('#')) continue;
+    const cells = line.split('\t');
+    if (cells.length < 3) continue;
+
+    const deckName = cleanText(cells[0]);
+    const question = cleanText(cells[1]);
+    const answer = cleanText(cells[2]);
+    const chapterNumber = parseChapterFromDeck(deckName);
+    if (!chapterNumber || !decks[chapterNumber]) continue;
+
+    if (!chapterMeta[chapterNumber].name || chapterMeta[chapterNumber].name === '') {
+      chapterMeta[chapterNumber].name = parseDeckTitle(deckName);
+    }
+
+    decks[chapterNumber].push({q: question, a: answer});
+    foundAny = true;
+  }
+
+  return foundAny;
+}
+
 function updateDeckInfo() {
-  deckName.textContent = meta.name;
-  deckDescription.textContent = meta.description;
+  deckName.textContent = chapterMeta[chapter].name || `Chapter ${chapter}`;
+  deckDescription.textContent = chapterMeta[chapter].description || 'Loaded from your Anki export file.';
 }
 
 function renderCard() {
+  cards = decks[chapter] || [];
+
   if (!cards.length) {
-    emptyState.classList.remove('hidden');
-    deckContent.classList.add('hidden');
+    setMessage('No cards found for this chapter.', true);
     return;
   }
+
   emptyState.classList.add('hidden');
   deckContent.classList.remove('hidden');
   const card = cards[currentIndex];
@@ -187,23 +179,48 @@ prevBtn.addEventListener('click', () => {
   if (cards.length === 0) return;
   currentIndex = (currentIndex - 1 + cards.length) % cards.length;
   showingAnswer = false;
+  flipBtn.textContent = 'Show Answer';
   renderCard();
 });
+
 flipBtn.addEventListener('click', () => {
   if (cards.length === 0) return;
   showingAnswer = !showingAnswer;
   flipBtn.textContent = showingAnswer ? 'Show Question' : 'Show Answer';
   renderCard();
 });
+
 nextBtn.addEventListener('click', () => {
   if (cards.length === 0) return;
   currentIndex = (currentIndex + 1) % cards.length;
   showingAnswer = false;
+  flipBtn.textContent = 'Show Answer';
   renderCard();
 });
 
-updateDeckInfo();
-renderCard();
+async function loadFlashcards() {
+  setMessage('Loading cards from All Decks.csv.txt...');
+  try {
+    const response = await fetch('All Decks.csv.txt');
+    if (!response.ok) throw new Error('Could not fetch deck file');
+    const text = await response.text();
+    const hasCards = parseCsvFile(text);
+    updateDeckInfo();
+    if (hasCards) {
+      currentIndex = 0;
+      showingAnswer = false;
+      flipBtn.textContent = 'Show Answer';
+      renderCard();
+    } else {
+      setMessage('No flashcard rows found in the export file.', true);
+    }
+  } catch (error) {
+    console.error(error);
+    setMessage('Unable to load the flashcard export file.', true);
+  }
+}
+
+loadFlashcards();
 </script>
 </body>
 </html>
